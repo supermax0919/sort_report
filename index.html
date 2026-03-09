@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>C 語言氣泡排序法展示</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; background: #f4f4f9; }
+        pre { background: #282c34; color: #abb2bf; padding: 15px; border-radius: 5px; overflow-x: auto; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .logic-box { border-left: 5px solid #007bff; padding-left: 15px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>氣泡排序法 (Bubble Sort)</h1>
+    
+    <div class="logic-box">
+        <p><strong>原理：</strong> 從頭開始比較相鄰的兩個元素，如果前面的比後面大就交換位置。每一輪結束後，最大的數字會像「氣泡」一樣浮到最後面。</p>
+    </div>
+
+    <h3>C 語言實作碼</h3>
+    <pre><code>
+#include &lt;stdio.h&gt;
+
+void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                // 交換數值
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}
+
+int main() {
+    int data[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(data)/sizeof(data[0]);
+    bubbleSort(data, n);
+    printf("排序後的結果: \n");
+    for (int i=0; i < n; i++) printf("%d ", data[i]);
+    return 0;
+}
+    </code></pre>
+
+    <h3>時間複雜度分析</h3>
+    <ul>
+        <li>最差情況：$O(n^2)$</li>
+        <li>最佳情況：$O(n)$ (已排序時)</li>
+    </ul>
+</div>
+
+</body>
+</html>
