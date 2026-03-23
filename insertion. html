@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插入排序法</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { margin: 10px 0; padding: 5px; }
+        button { padding: 5px 10px; }
+        #arrayContainer { display: flex; align-items: flex-end; height: 200px; margin-top: 20px; border-bottom: 1px solid #000; }
+        .element { width: 30px; margin: 0 5px; background: lightblue; border: 1px solid #ccc; transition: height 0.5s; position: relative; }
+        .highlight { background: yellow; }
+        .sorted { background: lightgreen; }
+        .element::after { content: attr(data-value); position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>插入排序法</h1>
+    <label for="arrayInput">輸入數組（用逗號分隔，例如：5,3,8,1）：</label><br>
+    <input type="text" id="arrayInput" placeholder="5,3,8,1"><br>
+    <button onclick="sortArray()">排序</button>
+    <div id="arrayContainer"></div>
+
+    <script>
+        async function insertionSort(arr) {
+            const container = document.getElementById('arrayContainer');
+            renderArray(arr, container);
+
+            for (let i = 1; i < arr.length; i++) {
+                let key = arr[i];
+                let j = i - 1;
+
+                // 高亮當前元素
+                highlightElement(i, 'highlight');
+                await sleep(500);
+
+                while (j >= 0 && arr[j] > key) {
+                    arr[j + 1] = arr[j];
+                    j--;
+
+                    // 移動元素
+                    renderArray(arr, container);
+                    highlightElement(j + 1, 'highlight');
+                    await sleep(500);
+                }
+                arr[j + 1] = key;
+
+                // 插入完成
+                renderArray(arr, container);
+                highlightElement(j + 1, 'sorted');
+                await sleep(500);
+            }
+
+            // 全部排序完成
+            renderArray(arr, container, true);
+        }
+
+        function renderArray(arr, container, allSorted = false) {
+            container.innerHTML = '';
+            arr.forEach((num, index) => {
+                const div = document.createElement('div');
+                div.className = 'element';
+                if (allSorted) div.classList.add('sorted');
+                div.style.height = (num * 20) + 'px';
+                div.setAttribute('data-value', num);
+                container.appendChild(div);
+            });
+        }
+
+        function highlightElement(index, className) {
+            const elements = document.querySelectorAll('.element');
+            elements.forEach(el => el.classList.remove('highlight', 'sorted'));
+            if (index >= 0 && index < elements.length) {
+                elements[index].classList.add(className);
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        async function sortArray() {
+            const input = document.getElementById('arrayInput').value;
+            const array = input.split(',').map(num => parseInt(num.trim())).filter(num => !isNaN(num));
+            if (array.length === 0) {
+                alert('請輸入有效的數組。');
+                return;
+            }
+            await insertionSort([...array]); // 複製數組以避免修改原數組
+        }
+    </script>
+</body>
+</html>
