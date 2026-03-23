@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>插入排序法</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      font-size: 16px;
+    }
+    .output {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>插入排序法</h1>
+  <p>請輸入數字陣列（以逗號分隔，例如：5,3,8,6,2）：</p>
+  <input type="text" id="arrayInput" placeholder="輸入數字陣列">
+  <button onclick="performInsertionSort()">排序</button>
+  <div class="output" id="output"></div>
+
+  <script>
+    function performInsertionSort() {
+      // 取得使用者輸入
+      const input = document.getElementById('arrayInput').value;
+      if (!input) {
+        document.getElementById('output').innerText = "請輸入有效的數字陣列！";
+        return;
+      }
+
+      // 將輸入轉換為數字陣列
+      let array = input.split(',').map(num => parseFloat(num.trim()));
+      if (array.some(isNaN)) {
+        document.getElementById('output').innerText = "請確保所有輸入都是數字！";
+        return;
+      }
+
+      // 插入排序法實現
+      for (let i = 1; i < array.length; i++) {
+        let key = array[i];
+        let j = i - 1;
+
+        // 將 key 插入到已排序部分
+        while (j >= 0 && array[j] > key) {
+          array[j + 1] = array[j];
+          j--;
+        }
+        array[j + 1] = key;
+      }
+
+      // 顯示排序結果
+      document.getElementById('output').innerText = `排序結果：${array.join(', ')}`;
+    }
+  </script>
+</body>
+</html>
